@@ -177,7 +177,10 @@
 
     dup1 __FUNC_SIG(balanceOf) eq balanceOf jumpi
     dup1 __FUNC_SIG(ownerOf)eq ownerOf jumpi
-    
+
+    // no match
+    0x00 dup1 revert
+
     totalSupply:
         GET_TOTAL_SUPPLY()
     feedHorse:
@@ -213,7 +216,6 @@
         BALANCE_OF()
     ownerOf:
         OWNER_OF()
-    MINT_HORSE()
 }
 
 
