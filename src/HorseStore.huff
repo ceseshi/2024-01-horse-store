@@ -354,6 +354,13 @@
     __EVENT_HASH(Transfer)                          // [sig, from (0x00), to, tokenId]
     0x00 0x00 log4                                  // []
 
+    // Increment TOTAL_SUPPLY
+    [TOTAL_SUPPLY]                                  // [TOTAL_SUPPLY, from (0x00), to, tokenId]
+    sload                                           // [totalSupply, from (0x00), to, tokenId]
+    0x01 add                                        // [totalSupply+1, from (0x00), to, tokenId]
+    [TOTAL_SUPPLY]                                  // [TOTAL_SUPPLY, totalSupply+1, from (0x00), to, tokenId]
+    sstore                                          // [from (0x00), to, tokenId]
+
     // Continue Executing
     cont jump
 
