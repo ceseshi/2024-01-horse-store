@@ -108,10 +108,10 @@
     dup2 dup2                           // [timestamp, horseFedTimestamp, timestamp, horseFedTimestamp]
     sub                                 // [timestamp - horseFedTimestamp, timestamp, horseFedTimestamp]
     [HORSE_HAPPY_IF_FED_WITHIN_CONST]   // [HORSE_HAPPY_IF_FED_WITHIN, timestamp - horseFedTimestamp, timestamp, horseFedTimestamp]
-    lt                                  // [HORSE_HAPPY_IF_FED_WITHIN < timestamp - horseFedTimestamp, timestamp, horseFedTimestamp]
+    gt                                  // [HORSE_HAPPY_IF_FED_WITHIN > timestamp - horseFedTimestamp, timestamp, horseFedTimestamp]
     start_return_true jumpi             // [timestamp, horseFedTimestamp]
     eq                                  // [timestamp == horseFedTimestamp]
-    start_return 
+    start_return
     jump
 
     start_return_true:
