@@ -33,7 +33,7 @@
 #define event ApprovalForAll(address,address,bool)
 
 /* Constants */
-#define constant HORSE_HAPPY_IF_FED_WITHIN_CONST = 0x0000000000000000000000000000000000000000000000000000000000015180 // 1 days 
+#define constant HORSE_HAPPY_IF_FED_WITHIN_CONST = 0x0000000000000000000000000000000000000000000000000000000000015180 // 1 days
 
 /* Storage Slots */
 #define constant TOTAL_SUPPLY = FREE_STORAGE_POINTER()
@@ -47,7 +47,7 @@
 #define constant SYMBOL_OFFSET =        0x0000000000000000000000000000000000000000000000000000000000000020
 #define constant SYMBOL_LENGTH_OFFSET = 0x0000000000000000000000000000000000000000000000000000000000000040
 
-/* HorseStore Methods */ 
+/* HorseStore Methods */
 #define macro GET_TOTAL_SUPPLY() = takes (0) returns (0) {
     [TOTAL_SUPPLY] // [TOTAL_SUPPLY]
     sload// [totalSupply]
@@ -78,6 +78,13 @@
 }
 
 #define macro FEED_HORSE() = takes (0) returns (0) {
+    0x04 calldataload                               // [tokenId]
+    [OWNER_LOCATION] LOAD_ELEMENT_FROM_KEYS(0x00)   // [owner]
+    // revert if owner is zero address/not minted
+    continue jumpi
+    NOT_MINTED(0x00)
+    continue:
+
     timestamp               // [timestamp]
     0x04 calldataload       // [horseId, timestamp]
     STORE_ELEMENT(0x00)     // []
@@ -91,6 +98,13 @@
 }
 
 #define macro IS_HAPPY_HORSE() = takes (0) returns (0) {
+    0x04 calldataload                               // [tokenId]
+    [OWNER_LOCATION] LOAD_ELEMENT_FROM_KEYS(0x00)   // [owner]
+    // revert if owner is zero address/not minted
+    continue jumpi
+    NOT_MINTED(0x00)
+    continue:
+
     0x04 calldataload                   // [horseId]
     LOAD_ELEMENT(0x00)                  // [horseFedTimestamp]
     timestamp                           // [timestamp, horseFedTimestamp]
@@ -102,7 +116,7 @@
     eq                                  // [timestamp == horseFedTimestamp]
     start_return 
     jump
-    
+
     start_return_true:
     0x01
 
@@ -119,9 +133,9 @@
     // Constructor arguments:
     // ?, name_size, name, ?, symbol_size, symbol
 
-    // This constructor will return the runtime bytecode with all the 
+    // This constructor will return the runtime bytecode with all the
     // constructor arguments concatenated at the end.
-    
+
     // Copy the runtime bytecode with constructor argument concatenated.
     0xb                                     // [offset] - constructor code size
     dup1                                    // [offset, offset]
@@ -234,7 +248,7 @@
 #define macro BALANCE_OF() = takes (0) returns (0) {
     0x04 calldataload                                   // [account]
     // revert if account is zero address
-    dup1 continue jumpi 
+    dup1 continue jumpi
     ZERO_ADDRESS(0x00)
     continue:
     [BALANCE_LOCATION] LOAD_ELEMENT_FROM_KEYS(0x00)     // [balance]
