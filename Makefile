@@ -19,7 +19,7 @@ update:; forge update
 
 build:; forge build
 
-test :; forge test 
+test :; forge test
 
 snapshot :; forge snapshot
 
@@ -27,7 +27,7 @@ format :; forge fmt
 
 anvil :; anvil -m 'test test test test test test test test test test test junk' --steps-tracing --block-time 1
 
-coverage :; forge coverage 
+coverage :; forge coverage
 
 coverage-report :; forge coverage --report debug > coverage-report.txt
 
@@ -35,8 +35,10 @@ scope :; tree ./src/ | sed 's/└/#/g; s/──/--/g; s/├/#/g; s/│ /|/g; s/�
 
 scopefile :; @tree ./src/ | sed 's/└/#/g' | awk -F '── ' '!/\.sol$$/ { path[int((length($$0) - length($$2))/2)] = $$2; next } { p = "src"; for(i=2; i<=int((length($$0) - length($$2))/2); i++) if (path[i] != "") p = p "/" path[i]; print p "/" $$2; }' > scope.txt
 
-slither :; slither . --config-file slither.config.json 
+slither :; slither . --config-file slither.config.json
 
 aderyn :; aderyn .
 
 huff :; huffc -e shanghai -b ./src/HorseStore.huff > compiled_huff.txt
+
+pdf :; pandoc ./audit-data/report.md -o ./audit-data/report.pdf --from markdown --template=./audit-data/eisvogel --listings
