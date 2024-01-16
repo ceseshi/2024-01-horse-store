@@ -90,11 +90,7 @@
     0x04 calldataload       // [horseId, timestamp]
     STORE_ELEMENT(0x00)     // []
 
-    // End execution 
-    0x11 timestamp mod      
-    endFeed jumpi                
-    revert 
-    endFeed:
+    // End execution
     stop
 }
 
