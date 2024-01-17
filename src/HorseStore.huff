@@ -72,8 +72,9 @@
 
 #define macro MINT_HORSE() = takes (0) returns (0) {
     [TOTAL_SUPPLY] // [TOTAL_SUPPLY]
-    caller         // [msg.sender, TOTAL_SUPPLY]
-    _MINT()        // [] 
+    sload          // [totalSupply]
+    caller         // [msg.sender, totalSupply]
+    _MINT()        // []
     stop           // []
 }
 
