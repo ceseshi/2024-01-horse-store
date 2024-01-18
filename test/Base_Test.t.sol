@@ -2,6 +2,7 @@
 pragma solidity 0.8.20;
 
 import {HorseStore} from "../src/HorseStore.sol";
+import {HorseStoreInvariant} from "./HorseStoreInvariant.t.sol";
 import {Test, console2} from "forge-std/Test.sol";
 
 abstract contract Base_Test is Test {
@@ -10,8 +11,14 @@ abstract contract Base_Test is Test {
     string public constant NFT_NAME = "HorseStore";
     string public constant NFT_SYMBOL = "HS";
 
+    HorseStoreInvariant horseStoreInvariant;
+
     function setUp() public virtual {
         horseStore = new HorseStore();
+
+        horseStoreInvariant = new HorseStoreInvariant(address(horseStore));
+
+        targetContract(address(horseStoreInvariant));
     }
 
     function testName() public {
