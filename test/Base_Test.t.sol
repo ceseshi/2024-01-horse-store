@@ -61,6 +61,30 @@ abstract contract Base_Test is Test {
         assertEq(horseStore.isHappyHorse(horseId), false);
     }
 
+    function testTransferHorse() public {
+        uint256 horseId = horseStore.totalSupply();
+        address user2 = makeAddr("user2");
+
+        vm.prank(user);
+        horseStore.mintHorse();
+
+        vm.prank(user);
+        horseStore.transferFrom(user, user2, horseId);
+
+        vm.prank(user);
+        horseStore.mintHorse();
+
+        assertEq(horseStore.balanceOf(user), 1);
+        assertEq(horseStore.balanceOf(user2), 1);
+        assertEq(horseStore.ownerOf(horseId), user2);
+    }
+
+    function invariant_testTotalSupply() public {
+        uint256 totalSupply = horseStore.totalSupply();
+        assert(totalSupply == 0 || horseStore.ownerOf(totalSupply - 1) == horseStoreInvariant.ownerOf(totalSupply - 1));
+        assertEq(totalSupply, horseStoreInvariant.getHorsesLength());
+    }
+
     /*//////////////////////////////////////////////////////////////
                             HELPER FUNCTIONS
     //////////////////////////////////////////////////////////////*/
